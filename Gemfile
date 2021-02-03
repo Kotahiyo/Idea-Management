@@ -37,6 +37,9 @@ group :development, :test do
   gem "pry-rails"
   gem "rubocop-rails"
   gem "rubocop-rspec"
+  gem "factory_bot_rails"
+  gem "faker"
+  gem "rspec-rails"
 end
 
 group :development do
