@@ -1,2 +1,3 @@
 class Idea < ApplicationRecord
+  belongs_to :categories, optional: true
 end
