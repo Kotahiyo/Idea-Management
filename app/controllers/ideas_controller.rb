@@ -16,6 +16,28 @@ class IdeasController < ApplicationController
   end
 
   def create
+    if Category.joins(:ideas).where(name: params[:idea][:category_name]).empty?
+      new_category = Category.new(name: params[:idea][:category_name])
 
+      new_category.save!
+
+      $category_id = new_category.id
+    else
+
+      $category_id = Category.joins(:ideas).where(name: params[:idea][:category_name]).first.id
+
+    end
+
+    idea = Idea.new(idea_params)
+
+    idea.save!
+
+    render status: :created, json: { data: idea, status: 201 } and return
   end
+
+  private
+
+    def idea_params
+      params.require(:idea).permit(:body, :category_id).merge(category_id: $category_id)
+    end
 end
