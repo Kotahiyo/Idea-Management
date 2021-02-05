@@ -10,6 +10,8 @@ class IdeasController < ApplicationController
 
             end
 
-    render json: { data: ideas }, status: :not_found
+    render status: :not_found, json: { status: 404, message: "Not Found" } and return if ideas.empty?
+
+    render json: { data: ideas } and return
   end
 end
