@@ -14,4 +14,8 @@ class IdeasController < ApplicationController
 
     render json: { data: ideas } and return
   end
+
+  def create
+
+  end
 end
