@@ -26,7 +26,7 @@ class IdeasController < ApplicationController
   private
 
     def idea_params
-      params.require(:idea).permit(:body, :category_id).merge(category_id: $category_id)
+      params.require(:idea).permit(:body, :category_id).merge(category_id: @category_id)
     end
 
     def unprocessable_entity_error
@@ -40,13 +40,13 @@ class IdeasController < ApplicationController
 
       if request_category.present? && params[:idea][:body].present?
 
-        $category_id = request_category.id
+        @category_id = request_category.id
 
       else
 
         new_category = Category.new(name: params[:idea][:category_name])
         new_category.save!
-        $category_id = new_category.id
+        @category_id = new_category.id
 
       end
     end
