@@ -16,15 +16,23 @@ class IdeasController < ApplicationController
   end
 
   def create
-    if Category.joins(:ideas).where(name: params[:idea][:category_name]).empty?
+    request_category = Category.joins(:ideas).where(name: params[:idea][:category_name]).first
+
+    if request_category.present? && params[:idea][:body].present?
+
+      $category_id = request_category.id
+
+    elsif request_category.present? && params[:idea][:body].blank?
+
+      render status: :unprocessable_entity, json: {status: 422} and return
+
+    else
+
       new_category = Category.new(name: params[:idea][:category_name])
 
       new_category.save!
 
       $category_id = new_category.id
-    else
-
-      $category_id = Category.joins(:ideas).where(name: params[:idea][:category_name]).first.id
 
     end
 
@@ -33,6 +41,7 @@ class IdeasController < ApplicationController
     idea.save!
 
     render status: :created, json: { data: idea, status: 201 } and return
+
   end
 
   private
